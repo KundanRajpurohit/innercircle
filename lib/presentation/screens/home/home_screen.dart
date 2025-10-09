@@ -184,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             color: Colors.black.withOpacity(0.1),
             blurRadius: 30,
             spreadRadius: 0,
-            offset: const Offset(0, 10),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
