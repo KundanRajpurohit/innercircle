@@ -14,12 +14,12 @@ class EventCard extends StatefulWidget {
   final String? currentUserId;
 
   const EventCard({
-    Key? key,
+    super.key,
     required this.event,
     this.distanceInKm,
     this.onTap,
     this.currentUserId,
-  }) : super(key: key);
+  });
 
   @override
   State<EventCard> createState() => _EventCardState();
@@ -75,64 +75,173 @@ class _EventCardState extends State<EventCard>
           setState(() => _isPressed = false);
           _controller.reverse();
         },
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: AppDimensions.spacingM,
-            vertical: AppDimensions.spacingS,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: _getCategoryColor().withOpacity(0.2),
-                blurRadius: 20,
-                spreadRadius: 0,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(24),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Gradient Header with Category
-                  _buildGradientHeader(isHost, hasJoined),
-
-                  // Content Section
-                  Padding(
-                    padding: EdgeInsets.all(AppDimensions.spacingL),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+        child: ClipPath(
+          clipper: TicketClipper(),
+          child: Container(
+            color: AppColors.darkPrimary, // yellow ticket color
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // CATEGORY + ICON (Movie, Sports etc.)
+                Row(
+                  children: [
+                    Row(
                       children: [
-                        // Title with badges
-                        _buildTitle(isHost, hasJoined),
-                        SizedBox(height: AppDimensions.spacingM),
-
-                        // Description
-                        Text(
-                          widget.event.description,
-                          style: AppTextStyles.body.copyWith(
-                            height: 1.5,
-                            color: AppColors.textSecondary,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                        Icon(
+                          _getCategoryIcon(),
+                          size: 28,
+                          color: const Color(0xFF87581C), // dark brown icon
                         ),
-                        SizedBox(height: AppDimensions.spacingL),
-
-                        // Info chips
-                        _buildInfoSection(),
+                        const SizedBox(width: 8),
+                        Text(
+                          widget.event.category,
+                          style: const TextStyle(
+                            color: Color(0xFF87581C),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ],
                     ),
+                    const Spacer(),
+                    // HOST BADGE
+                    if (isHost)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: AppColors.primaryGradient,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.primary.withOpacity(0.3),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(
+                              Icons.star_rounded,
+                              size: 14,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              'Host',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+
+                const SizedBox(height: 8),
+
+                // TITLE
+                Center(
+                  child: Text(
+                    widget.event.title,
+                    style: const TextStyle(
+                      color: Color(0xFF87581C),
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                ],
-              ),
+                ),
+
+                const SizedBox(height: 8),
+
+                // DOTTED DIVIDER
+                Center(
+                  child: Container(
+                    height: 1,
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: Color(0xFF87581C),
+                          width: 1,
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                // TIME RANGE
+                Center(
+                  child: Text(
+                    "Time :-  ${DateFormat('hh:mm a').format(widget.event.dateTime)} "
+                    "to ${DateFormat('hh:mm a').format(widget.event.dateTime.add(const Duration(hours: 3)))}",
+                    style: const TextStyle(
+                      color: Color(0xFF87581C),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 2),
+
+                Text(
+                  widget.event.description,
+                  maxLines: 2,
+                  style: const TextStyle(
+                    color: Color(0xFF87581C),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                // DATE + LOCATION
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Date :-  ${DateFormat('dd.MM.yyyy').format(widget.event.dateTime)}",
+                      style: const TextStyle(
+                        color: Color(0xFF87581C),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          size: 16,
+                          color: Color(0xFF87581C),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          "${widget.distanceInKm} Kms away" ?? "Unknown",
+                          style: const TextStyle(
+                            color: Color(0xFF87581C),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -459,4 +568,111 @@ class _EventCardState extends State<EventCard>
 
     return DateFormat('MMM d, h:mm a').format(dateTime);
   }
+}
+
+class TicketClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    const bigR = 18.0;
+    const smallR1 = 7.0;
+    const smallR2 = 6.0;
+
+    final path = Path();
+
+    // Start at top-left
+    path.moveTo(0, 0);
+
+    // Top edge
+    path.lineTo(size.width, 0);
+
+    // -----------------------------------
+    // RIGHT SIDE PERFORATION (original)
+    // -----------------------------------
+
+    path.lineTo(size.width, size.height * 0.10);
+    path.arcToPoint(
+      Offset(size.width, size.height * 0.18),
+      radius: const Radius.circular(smallR1),
+      clockwise: false,
+    );
+
+    path.lineTo(size.width, size.height * 0.25);
+    path.arcToPoint(
+      Offset(size.width, size.height * 0.33),
+      radius: const Radius.circular(smallR2),
+      clockwise: false,
+    );
+
+    path.lineTo(size.width, size.height * 0.40);
+    path.arcToPoint(
+      Offset(size.width, size.height * 0.60),
+      radius: const Radius.circular(bigR),
+      clockwise: false,
+    );
+
+    path.lineTo(size.width, size.height * 0.70);
+    path.arcToPoint(
+      Offset(size.width, size.height * 0.78),
+      radius: const Radius.circular(smallR2),
+      clockwise: false,
+    );
+
+    path.lineTo(size.width, size.height * 0.83);
+    path.arcToPoint(
+      Offset(size.width, size.height * 0.92),
+      radius: const Radius.circular(smallR1),
+      clockwise: false,
+    );
+
+    path.lineTo(size.width, size.height);
+
+    // Bottom edge
+    path.lineTo(0, size.height);
+
+    // -----------------------------------
+    // LEFT SIDE PERFORATION (mirrored)
+    // -----------------------------------
+
+    path.lineTo(0, size.height * 0.92);
+    path.arcToPoint(
+      Offset(0, size.height * 0.83),
+      radius: const Radius.circular(smallR1),
+      clockwise: false,
+    );
+
+    path.lineTo(0, size.height * 0.78);
+    path.arcToPoint(
+      Offset(0, size.height * 0.70),
+      radius: const Radius.circular(smallR2),
+      clockwise: false,
+    );
+
+    path.lineTo(0, size.height * 0.60);
+    path.arcToPoint(
+      Offset(0, size.height * 0.40),
+      radius: const Radius.circular(bigR),
+      clockwise: false,
+    );
+
+    path.lineTo(0, size.height * 0.33);
+    path.arcToPoint(
+      Offset(0, size.height * 0.25),
+      radius: const Radius.circular(smallR2),
+      clockwise: false,
+    );
+
+    path.lineTo(0, size.height * 0.18);
+    path.arcToPoint(
+      Offset(0, size.height * 0.10),
+      radius: const Radius.circular(smallR1),
+      clockwise: false,
+    );
+
+    path.lineTo(0, 0);
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }

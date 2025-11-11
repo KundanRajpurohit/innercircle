@@ -120,61 +120,74 @@ class TogetherTheme {
   );
 
   // 🌙 Dark Theme
+  // 🌙 New Dark Theme (Matching Your UI)
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: darkBackground,
-    primaryColor: darkPrimary,
+    useMaterial3: true,
+
+    // Main background
+    scaffoldBackgroundColor: const Color(0xFF2E2C3E),
+
     colorScheme: const ColorScheme.dark(
-      primary: darkPrimary,
-      secondary: darkAccent,
-      surface: darkSurface,
+      primary: Color(0xFFE7C875), // golden yellow
+      secondary: Color(0xFFD8898A), // soft pink
+      surface: Color(0xFF3B394C),
+      onPrimary: Colors.black,
+      onSurface: Colors.white,
     ),
+
+    // ✅ Text Colors
     textTheme: const TextTheme(
       headlineSmall: TextStyle(
         fontFamily: fontPrimary,
         fontWeight: FontWeight.w600,
         fontSize: 24,
-        color: darkText,
+        color: Colors.white,
       ),
       titleMedium: TextStyle(
         fontFamily: fontPrimary,
         fontWeight: FontWeight.w500,
         fontSize: 18,
-        color: darkText,
+        color: Colors.white,
       ),
       bodyMedium: TextStyle(
         fontFamily: fontSecondary,
         fontSize: 14,
         fontWeight: FontWeight.w400,
-        color: Color(0xFFA1A1AA),
+        color: Color(0xFFB6B6C4), // light grey-purple
       ),
       labelSmall: TextStyle(
         fontFamily: fontSecondary,
         fontSize: 12,
-        color: Color(0xFFA1A1AA),
+        color: Color(0xFFB6B6C4),
       ),
     ),
+
+    // ✅ AppBar
     appBarTheme: const AppBarTheme(
-      backgroundColor: darkBackground,
+      backgroundColor: Color(0xFF2E2C3E),
       elevation: 0,
-      iconTheme: IconThemeData(color: darkText),
+      iconTheme: IconThemeData(color: Colors.white),
       titleTextStyle: TextStyle(
         fontFamily: fontPrimary,
         fontWeight: FontWeight.w600,
         fontSize: 20,
-        color: darkText,
+        color: Colors.white,
       ),
     ),
+
+    // ✅ Cards
     cardTheme: CardTheme(
-      color: darkSurface,
+      color: const Color(0xFF3B394C),
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     ),
+
+    // ✅ Buttons (Golden Yellow)
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: darkPrimary,
-        foregroundColor: darkText,
-        elevation: 0,
+        backgroundColor: const Color(0xFFE7C875),
+        foregroundColor: Colors.black,
         padding: const EdgeInsets.symmetric(
           horizontal: spacingL,
           vertical: spacingM,
@@ -187,20 +200,22 @@ class TogetherTheme {
         ),
       ),
     ),
+
+    // ✅ Inputs (Pink outline + soft surface)
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: darkSurface,
+      fillColor: const Color(0xFF3B394C),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFF3F3F46)),
+        borderSide: const BorderSide(color: Color(0xFFD8898A)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFF3F3F46)),
+        borderSide: const BorderSide(color: Color(0xFFD8898A)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: darkPrimary, width: 2),
+        borderSide: const BorderSide(color: Color(0xFFE7C875), width: 2),
       ),
       contentPadding: const EdgeInsets.symmetric(
         horizontal: spacingM,

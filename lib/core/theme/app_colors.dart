@@ -44,13 +44,14 @@ class AppColors {
   static const Color infoLight = Color(0xFFCFFAFE);
 
   // 🌙 DARK THEME COLORS
-  static const Color darkPrimary = Color(0xFF818CF8);
+  static const Color darkPrimary = Color(0xFFF9C65C);
   static const Color darkAccent = Color(0xFFF472B6);
-  static const Color darkBackground = Color(0xFF0F172A); // Slate
+  static const Color darkBackground = Color(0xFF1E1E1E); // Slate
   static const Color darkSurface = Color(0xFF1E293B);
   static const Color darkSurfaceElevated = Color(0xFF334155);
   static const Color darkText = Color(0xFFF1F5F9);
-  static const Color darkTextSecondary = Color(0xFFCBD5E1);
+  static const Color darkSecondary = Color(0xFF878961);
+  static const Color darkTextSecondary = Color(0xFFA06200);
 
   // 🎯 NEUTRAL GRAYS - Modern
   static const Color grey50 = Color(0xFFF8FAFC);

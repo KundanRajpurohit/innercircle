@@ -58,7 +58,7 @@ class TogetherApp extends StatelessWidget {
         ],
         child: MaterialApp(
           title: 'Together',
-          theme: TogetherTheme.lightTheme,
+          theme: TogetherTheme.darkTheme,
           darkTheme: TogetherTheme.darkTheme,
           themeMode: ThemeMode.system,
           home: const SplashScreen(),

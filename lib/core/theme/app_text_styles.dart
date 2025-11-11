@@ -54,7 +54,7 @@ class AppTextStyles {
     fontFamily: fontSecondary,
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: AppColors.darkTextSecondary,
+    color: AppColors.darkText,
     height: 1.5,
   );
 
@@ -79,7 +79,7 @@ class AppTextStyles {
     fontFamily: fontSecondary,
     fontSize: 12,
     fontWeight: FontWeight.w400,
-    color: AppColors.darkTextSecondary,
+    color: AppColors.darkText,
     height: 1.4,
   );
 
