@@ -33,7 +33,7 @@ class CustomTextField extends StatefulWidget {
   final bool autofocus;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     this.hintText,
     this.labelText,
     this.controller,
@@ -59,7 +59,7 @@ class CustomTextField extends StatefulWidget {
     this.contentPadding,
     this.inputFormatters,
     this.autofocus = false,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -115,7 +115,7 @@ class _CustomTextFieldState extends State<CustomTextField>
         (widget.enabled ? AppColors.surface : AppColors.grey100);
     final effectiveBorderColor = widget.borderColor ?? const Color(0xFFE5E7EB);
     final effectiveFocusedBorderColor =
-        widget.focusedBorderColor ?? AppColors.primary;
+        widget.focusedBorderColor ?? AppColors.darkPrimary;
 
     return ScaleTransition(
       scale: _scaleAnimation,
@@ -140,51 +140,55 @@ class _CustomTextFieldState extends State<CustomTextField>
           labelText: widget.labelText,
           hintStyle:
               widget.hintStyle ??
-              AppTextStyles.body.copyWith(color: AppColors.textSecondary),
+              AppTextStyles.body.copyWith(color: AppColors.white),
           labelStyle:
               widget.labelStyle ??
               AppTextStyles.body.copyWith(
                 color:
-                    _isFocused
-                        ? effectiveFocusedBorderColor
-                        : AppColors.textSecondary,
+                    _isFocused ? effectiveFocusedBorderColor : AppColors.white,
               ),
-          prefixIcon: widget.prefixIcon,
+          // prefixIcon: widget.prefixIcon,
           suffixIcon: widget.suffixIcon,
-          filled: true,
+          filled: false,
           fillColor: effectiveFillColor,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-            borderSide: BorderSide(color: effectiveBorderColor),
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffF9C65C), width: 1),
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-            borderSide: BorderSide(color: effectiveBorderColor, width: 1.5),
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffF9C65C), width: 2),
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-            borderSide: BorderSide(
-              color: effectiveFocusedBorderColor,
-              width: 2,
-            ),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-            borderSide: BorderSide(color: AppColors.error, width: 1.5),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-            borderSide: BorderSide(color: AppColors.error, width: 2),
-          ),
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-            borderSide: BorderSide(color: AppColors.grey300, width: 1.5),
-          ),
+          // border: OutlineInputBorder(
+          //   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          //   borderSide: BorderSide(color: effectiveBorderColor),
+          // ),
+          // enabledBorder: OutlineInputBorder(
+          //   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          //   borderSide: BorderSide(color: effectiveBorderColor, width: 1.5),
+          // ),
+          // focusedBorder: OutlineInputBorder(
+          //   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          //   borderSide: BorderSide(
+          //     color: effectiveFocusedBorderColor,
+          //     width: 2,
+          //   ),
+          // ),
+          // errorBorder: OutlineInputBorder(
+          //   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          //   borderSide: BorderSide(color: AppColors.error, width: 1.5),
+          // ),
+          // focusedErrorBorder: OutlineInputBorder(
+          //   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          //   borderSide: BorderSide(color: AppColors.error, width: 2),
+          // ),
+          // disabledBorder: OutlineInputBorder(
+          //   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          //   borderSide: BorderSide(color: AppColors.grey300, width: 1.5),
+          // ),
           contentPadding:
               widget.contentPadding ??
               EdgeInsets.symmetric(
                 horizontal: AppDimensions.spacingM,
-                vertical: AppDimensions.spacingM,
+                // vertical: AppDimensions.spacingM,
               ),
           counterText: widget.maxLength != null ? null : '',
           errorStyle: AppTextStyles.caption.copyWith(color: AppColors.error),

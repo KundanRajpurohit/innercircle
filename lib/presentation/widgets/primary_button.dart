@@ -15,17 +15,17 @@ class PrimaryButton extends StatefulWidget {
   final Gradient? gradient;
 
   const PrimaryButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
     this.isLoading = false,
     this.isFullWidth = true,
     this.height,
     this.icon,
-    this.backgroundColor,
+    this.backgroundColor = AppColors.darkPrimary,
     this.textColor,
     this.gradient,
-  }) : super(key: key);
+  });
 
   @override
   State<PrimaryButton> createState() => _PrimaryButtonState();
@@ -87,21 +87,8 @@ class _PrimaryButtonState extends State<PrimaryButton>
           width: widget.isFullWidth ? double.infinity : null,
           height: widget.height ?? AppDimensions.buttonHeightM,
           decoration: BoxDecoration(
-            gradient: isDisabled ? null : effectiveGradient,
             color: isDisabled ? AppColors.grey300 : widget.backgroundColor,
             borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-            boxShadow:
-                isDisabled
-                    ? null
-                    : [
-                      BoxShadow(
-                        color: (widget.backgroundColor ?? AppColors.primary)
-                            .withOpacity(0.4),
-                        blurRadius: 20,
-                        spreadRadius: 0,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
           ),
           child: Material(
             color: Colors.transparent,
@@ -111,13 +98,13 @@ class _PrimaryButtonState extends State<PrimaryButton>
               child: Container(
                 padding: EdgeInsets.symmetric(
                   horizontal: AppDimensions.spacingL,
-                  vertical: AppDimensions.spacingM,
+                  vertical: 14,
                 ),
                 child:
                     widget.isLoading
                         ? Center(
                           child: SizedBox(
-                            height: 20,
+                            height: 25,
                             width: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2.5,
@@ -138,7 +125,8 @@ class _PrimaryButtonState extends State<PrimaryButton>
                                 color:
                                     isDisabled
                                         ? AppColors.grey500
-                                        : (widget.textColor ?? Colors.white),
+                                        : (widget.textColor ??
+                                            AppColors.darkTextSecondary),
                               ),
                               SizedBox(width: AppDimensions.spacingS),
                             ],
@@ -148,8 +136,9 @@ class _PrimaryButtonState extends State<PrimaryButton>
                                 color:
                                     isDisabled
                                         ? AppColors.grey500
-                                        : (widget.textColor ?? Colors.white),
-                                fontWeight: FontWeight.w700,
+                                        : (widget.textColor ??
+                                            AppColors.darkTextSecondary),
+                                fontWeight: FontWeight.w600,
                                 fontSize: 16,
                               ),
                             ),
@@ -163,3 +152,111 @@ class _PrimaryButtonState extends State<PrimaryButton>
     );
   }
 }
+
+//Shiny version to keep for reference
+  // Widget build(BuildContext context) {
+  //   final isDisabled = widget.onPressed == null || widget.isLoading;
+  //   final effectiveGradient = widget.gradient ?? AppColors.primaryGradient;
+
+  //   return ScaleTransition(
+  //     scale: _scaleAnimation,
+  //     child: GestureDetector(
+  //       onTapDown:
+  //           isDisabled
+  //               ? null
+  //               : (_) {
+  //                 setState(() => _isPressed = true);
+  //                 _controller.forward();
+  //               },
+  //       onTapUp:
+  //           isDisabled
+  //               ? null
+  //               : (_) {
+  //                 setState(() => _isPressed = false);
+  //                 _controller.reverse();
+  //                 widget.onPressed?.call();
+  //               },
+  //       onTapCancel: () {
+  //         setState(() => _isPressed = false);
+  //         _controller.reverse();
+  //       },
+  //       child: Container(
+  //         width: widget.isFullWidth ? double.infinity : null,
+  //         height: widget.height ?? AppDimensions.buttonHeightM,
+  //         decoration: BoxDecoration(
+  //           color: isDisabled ? AppColors.grey300 : widget.backgroundColor,
+  //           borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+  //           boxShadow:
+  //               isDisabled
+  //                   ? null
+  //                   : [
+  //                     BoxShadow(
+  //                       color: (widget.backgroundColor ??
+  //                               AppColors.darkSecondary)
+  //                           .withOpacity(0.4),
+  //                       blurRadius: 10,
+  //                       spreadRadius: 0,
+  //                       offset: const Offset(0, 8),
+  //                     ),
+  //                   ],
+  //         ),
+  //         child: Material(
+  //           color: Colors.transparent,
+  //           child: InkWell(
+  //             onTap: isDisabled ? null : widget.onPressed,
+  //             borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+  //             child: Container(
+  //               padding: EdgeInsets.symmetric(
+  //                 horizontal: AppDimensions.spacingL,
+  //                 vertical: 14,
+  //               ),
+  //               child:
+  //                   widget.isLoading
+  //                       ? Center(
+  //                         child: SizedBox(
+  //                           height: 25,
+  //                           width: 20,
+  //                           child: CircularProgressIndicator(
+  //                             strokeWidth: 2.5,
+  //                             valueColor: AlwaysStoppedAnimation<Color>(
+  //                               widget.textColor ?? Colors.white,
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       )
+  //                       : Row(
+  //                         mainAxisSize: MainAxisSize.min,
+  //                         mainAxisAlignment: MainAxisAlignment.center,
+  //                         children: [
+  //                           if (widget.icon != null) ...[
+  //                             Icon(
+  //                               widget.icon,
+  //                               size: AppDimensions.iconS,
+  //                               color:
+  //                                   isDisabled
+  //                                       ? AppColors.grey500
+  //                                       : (widget.textColor ?? Colors.white),
+  //                             ),
+  //                             SizedBox(width: AppDimensions.spacingS),
+  //                           ],
+  //                           Text(
+  //                             widget.text,
+  //                             style: AppTextStyles.button.copyWith(
+  //                               color:
+  //                                   isDisabled
+  //                                       ? AppColors.grey500
+  //                                       : (widget.textColor ?? Colors.white),
+  //                               fontWeight: FontWeight.w600,
+  //                               fontSize: 16,
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+

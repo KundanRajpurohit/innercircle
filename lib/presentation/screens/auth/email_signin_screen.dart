@@ -1,4 +1,6 @@
 // screens/auth/email_sign_in_screen.dart
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:innercircle/blocs/auth/auth_bloc.dart';
@@ -7,6 +9,7 @@ import 'package:innercircle/blocs/auth/auth_state.dart';
 import 'package:innercircle/core/theme/app_colors.dart';
 import 'package:innercircle/core/theme/app_dimensions.dart';
 import 'package:innercircle/core/theme/app_text_styles.dart';
+import 'package:innercircle/presentation/screens/auth/email_signup_screen.dart';
 
 import '../../widgets/input/custom_text_feild.dart';
 import '../../widgets/primary_button.dart';
@@ -15,7 +18,7 @@ import '../user/interest_screen.dart';
 import 'forgot_password_screen.dart';
 
 class EmailSignInScreen extends StatefulWidget {
-  const EmailSignInScreen({Key? key}) : super(key: key);
+  const EmailSignInScreen({super.key});
 
   @override
   State<EmailSignInScreen> createState() => _EmailSignInScreenState();
@@ -80,7 +83,13 @@ class _EmailSignInScreenState extends State<EmailSignInScreen>
     return Scaffold(
       body: Container(
         height: double.infinity,
-        decoration: BoxDecoration(gradient: AppColors.primaryGradient),
+        decoration: BoxDecoration(
+          gradient: AppColors.darkprimaryGradient,
+          image: DecorationImage(
+            image: AssetImage('assets/images/ic_bg.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthError) {
@@ -161,61 +170,116 @@ class _EmailSignInScreenState extends State<EmailSignInScreen>
                               onPressed: () => Navigator.pop(context),
                             ),
                           ),
-                          SizedBox(height: 40),
+                          SizedBox(height: 20),
 
                           // Title
-                          Text(
-                            'Welcome Back! 👋',
-                            style: AppTextStyles.headline.copyWith(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
+                          Center(
+                            child: Text(
+                              'Welcome Back! 👋',
+                              style: AppTextStyles.headline.copyWith(
+                                color: AppColors.darkPrimary,
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                          SizedBox(height: 12),
+                          SizedBox(height: 4),
 
-                          Text(
-                            'Sign in to continue your journey',
-                            style: AppTextStyles.body.copyWith(
-                              color: Colors.white.withOpacity(0.9),
-                              fontSize: 16,
+                          Center(
+                            child: Text(
+                              'Sign in to continue your journey',
+                              style: AppTextStyles.body.copyWith(
+                                color: AppColors.darkPrimary.withOpacity(0.6),
+                                fontSize: 16,
+                              ),
                             ),
                           ),
-                          SizedBox(height: 100),
+                          SizedBox(height: 30),
 
                           // Form Card
                           _buildFormCard(isLoading),
 
-                          SizedBox(height: 40),
+                          SizedBox(height: 20),
 
-                          // Forgot Password
+                          Divider(
+                            color: AppColors.white.withOpacity(0.7),
+                            thickness: 1,
+                          ),
+
                           Center(
-                            child: TextButton(
-                              onPressed:
-                                  isLoading
-                                      ? null
-                                      : () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder:
-                                                (_) =>
-                                                    const ForgotPasswordScreen(),
-                                          ),
-                                        );
-                                      },
-                              child: Text(
-                                'Forgot Password?',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.white,
-                                ),
+                            child: Text(
+                              'or',
+                              style: AppTextStyles.body.copyWith(
+                                color: AppColors.white.withOpacity(0.6),
+                                fontSize: 16,
                               ),
                             ),
                           ),
+                          SizedBox(height: 20),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/Google (icon — Colour).png',
+                                height: 25,
+                              ),
+                              SizedBox(width: 30),
+                              Image.asset(
+                                'assets/images/Apple (icon — Colour).png',
+                                height: 30,
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 40),
+
+                          PrimaryButton(
+                            text: 'Log In',
+                            icon: Icons.login_rounded,
+                            backgroundColor: AppColors.darkPrimary,
+                            onPressed: isLoading ? null : _signIn,
+                            isLoading: isLoading,
+                          ),
+
+                          SizedBox(height: 20),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Don’t have an account? ",
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const EmailSignUpScreen(),
+                                    ),
+                                  );
+                                  // navigate to register screen
+                                  // Navigator.push(...)
+                                },
+                                child: const Text(
+                                  "Register Now",
+                                  style: TextStyle(
+                                    color: Color(
+                                      0xffF8C255,
+                                    ), // same yellow as your UI
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          // Forgot Password
                         ],
                       ),
                     ),
@@ -230,19 +294,8 @@ class _EmailSignInScreenState extends State<EmailSignInScreen>
   }
 
   Widget _buildFormCard(bool isLoading) {
-    return Container(
-      padding: EdgeInsets.all(AppDimensions.spacingXL),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 30,
-            offset: Offset(0, 10),
-          ),
-        ],
-      ),
+    return Material(
+      color: Colors.transparent,
       child: Column(
         children: [
           // Email Field
@@ -251,7 +304,7 @@ class _EmailSignInScreenState extends State<EmailSignInScreen>
             labelText: 'Email',
             hintText: 'Enter your email',
             keyboardType: TextInputType.emailAddress,
-            prefixIcon: Icon(Icons.email_rounded, color: AppColors.primary),
+            prefixIcon: Icon(Icons.email_rounded, color: AppColors.darkPrimary),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'Please enter your email';
@@ -270,13 +323,13 @@ class _EmailSignInScreenState extends State<EmailSignInScreen>
             labelText: 'Password',
             hintText: 'Enter your password',
             obscureText: _obscurePassword,
-            prefixIcon: Icon(Icons.lock_rounded, color: AppColors.primary),
+            prefixIcon: Icon(Icons.lock_rounded, color: AppColors.darkPrimary),
             suffixIcon: IconButton(
               icon: Icon(
                 _obscurePassword
                     ? Icons.visibility_off_rounded
                     : Icons.visibility_rounded,
-                color: AppColors.grey600,
+                color: AppColors.darkPrimary,
               ),
               onPressed: () {
                 setState(() => _obscurePassword = !_obscurePassword);
@@ -289,17 +342,124 @@ class _EmailSignInScreenState extends State<EmailSignInScreen>
               return null;
             },
           ),
-          SizedBox(height: AppDimensions.spacingXL),
+          SizedBox(height: 3),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: TextButton(
+              onPressed:
+                  isLoading
+                      ? null
+                      : () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ForgotPasswordScreen(),
+                          ),
+                        );
+                      },
+              child: Text(
+                'Forgot Password?',
+                style: TextStyle(
+                  color: AppColors.darkPrimary,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+
+                  decorationColor: Colors.white,
+                ),
+              ),
+            ),
+          ),
 
           // Sign In Button
-          PrimaryButton(
-            text: 'Sign In',
-            icon: Icons.login_rounded,
-            onPressed: isLoading ? null : _signIn,
-            isLoading: isLoading,
-          ),
         ],
       ),
     );
   }
+
+  //TODO: Glassy effect - keep for reference
+  // Widget _buildFormCard(bool isLoading) {
+  //   return ClipRRect(
+  //     borderRadius: BorderRadius.circular(16),
+  //     child: BackdropFilter(
+  //       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+  //       child: Container(
+  //         padding: EdgeInsets.all(AppDimensions.spacingXL),
+  //         decoration: BoxDecoration(
+  //           color: Colors.white.withOpacity(0.15),
+  //           borderRadius: BorderRadius.circular(16),
+  //           border: Border.all(
+  //             color: Colors.white.withOpacity(0.3),
+  //             width: 1.5,
+  //           ),
+  //         ),
+  //         child: Material(
+  //           color: Colors.transparent,
+  //           child: Column(
+  //             children: [
+  //               // Email Field
+  //               CustomTextField(
+  //                 controller: _emailController,
+  //                 labelText: 'Email',
+  //                 hintText: 'Enter your email',
+  //                 keyboardType: TextInputType.emailAddress,
+  //                 prefixIcon: Icon(
+  //                   Icons.email_rounded,
+  //                   color: AppColors.primary,
+  //                 ),
+  //                 validator: (value) {
+  //                   if (value == null || value.trim().isEmpty) {
+  //                     return 'Please enter your email';
+  //                   }
+  //                   if (!value.contains('@')) {
+  //                     return 'Please enter a valid email';
+  //                   }
+  //                   return null;
+  //                 },
+  //               ),
+  //               SizedBox(height: AppDimensions.spacingL),
+
+  //               // Password Field
+  //               CustomTextField(
+  //                 controller: _passwordController,
+  //                 labelText: 'Password',
+  //                 hintText: 'Enter your password',
+  //                 obscureText: _obscurePassword,
+  //                 prefixIcon: Icon(
+  //                   Icons.lock_rounded,
+  //                   color: AppColors.primary,
+  //                 ),
+  //                 suffixIcon: IconButton(
+  //                   icon: Icon(
+  //                     _obscurePassword
+  //                         ? Icons.visibility_off_rounded
+  //                         : Icons.visibility_rounded,
+  //                     color: AppColors.grey600,
+  //                   ),
+  //                   onPressed: () {
+  //                     setState(() => _obscurePassword = !_obscurePassword);
+  //                   },
+  //                 ),
+  //                 validator: (value) {
+  //                   if (value == null || value.isEmpty) {
+  //                     return 'Please enter your password';
+  //                   }
+  //                   return null;
+  //                 },
+  //               ),
+  //               SizedBox(height: AppDimensions.spacingXL),
+
+  //               // Sign In Button
+  //               PrimaryButton(
+  //                 text: 'Sign In',
+  //                 icon: Icons.login_rounded,
+  //                 onPressed: isLoading ? null : _signIn,
+  //                 isLoading: isLoading,
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

@@ -12,6 +12,7 @@ import 'package:innercircle/core/theme/app_dimensions.dart';
 import 'package:innercircle/core/theme/app_text_styles.dart';
 import 'package:innercircle/data/models/event.dart';
 import 'package:innercircle/data/repositries/location_repo.dart';
+import 'package:innercircle/presentation/widgets/curved_top_container.dart';
 
 import 'package:innercircle/presentation/widgets/input/custom_text_feild.dart';
 import 'package:innercircle/presentation/widgets/primary_button.dart';
@@ -20,7 +21,7 @@ import 'package:intl/intl.dart';
 import 'dart:ui';
 
 class CreateEventScreen extends StatefulWidget {
-  const CreateEventScreen({Key? key}) : super(key: key);
+  const CreateEventScreen({super.key});
 
   @override
   State<CreateEventScreen> createState() => _CreateEventScreenState();
@@ -246,12 +247,14 @@ class _CreateEventScreenState extends State<CreateEventScreen>
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [
-              AppColors.backgroundGradientTop,
-              AppColors.backgroundGradientBottom,
+              AppColors.darkBackground, // top dark purple/grey
+              Color(0xFF2F2F40), // mid shadow tone
+              AppColors.darkBackground, // bottom almost-black
             ],
+            stops: [0.2, 0.5, 1.0],
           ),
         ),
         child: BlocListener<EventsBloc, EventsState>(
@@ -286,16 +289,16 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                 pinned: true,
                 backgroundColor: Colors.transparent,
                 flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    decoration: BoxDecoration(
-                      gradient: AppColors.primaryGradient,
-                    ),
+                  background: CurvedTopContainer(
                     child: SafeArea(
                       child: Padding(
-                        padding: EdgeInsets.all(AppDimensions.spacingL),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppDimensions.spacingL,
+                          vertical: 10,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
                               'Create Event 🎉',
@@ -335,9 +338,9 @@ class _CreateEventScreenState extends State<CreateEventScreen>
 
                           // Category Selection
                           _buildSectionTitle('Choose Category', '🎯'),
-                          SizedBox(height: AppDimensions.spacingM),
+                          SizedBox(height: 1),
                           _buildCategoryGrid(),
-                          SizedBox(height: AppDimensions.spacingXL),
+                          SizedBox(height: 1),
 
                           // Event Details
                           _buildSectionTitle('Event Details', '📝'),
@@ -393,7 +396,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
           style: AppTextStyles.subheading.copyWith(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+            color: AppColors.white,
           ),
         ),
       ],
@@ -406,7 +409,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
-        crossAxisSpacing: 12,
+        crossAxisSpacing: 8,
         mainAxisSpacing: 12,
         childAspectRatio: 0.85,
       ),
@@ -440,14 +443,14 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                               end: Alignment.bottomRight,
                             )
                             : null,
-                    color: isSelected ? null : Colors.white,
+                    color: isSelected ? null : AppColors.darkSecondary,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color:
                           isSelected
-                              ? Colors.transparent
+                              ? AppColors.darkPrimary
                               : AppColors.borderLight,
-                      width: 1.5,
+                      width: 2.5,
                     ),
                     boxShadow: [
                       BoxShadow(
@@ -468,8 +471,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                       Text(
                         category['name'],
                         style: TextStyle(
-                          color:
-                              isSelected ? Colors.white : AppColors.textPrimary,
+                          color: isSelected ? Colors.white : AppColors.darkText,
                           fontSize: 11,
                           fontWeight:
                               isSelected ? FontWeight.w600 : FontWeight.w500,
@@ -491,48 +493,74 @@ class _CreateEventScreenState extends State<CreateEventScreen>
 
   Widget _buildEventDetailsCard() {
     return Container(
-      padding: EdgeInsets.all(AppDimensions.spacingL),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
       child: Column(
         children: [
-          CustomTextField(
-            controller: _titleController,
-            labelText: 'Event Title',
-            hintText: 'e.g., Movie Night at PVR',
-            prefixIcon: Icon(Icons.title_rounded, color: AppColors.primary),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return 'Please enter event title';
-              }
-              return null;
-            },
+          Container(
+            padding: EdgeInsets.all(AppDimensions.spacingL),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.white.withOpacity(0.9)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.05),
+                  blurRadius: 20,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: CustomTextField(
+              controller: _titleController,
+              labelText: 'Event Title',
+              hintText: 'e.g., Movie Night at PVR',
+              suffixIcon: Icon(
+                Icons.title_rounded,
+                color: AppColors.darkPrimary,
+              ),
+              prefixIcon: Icon(Icons.title_rounded, color: AppColors.primary),
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return 'Please enter event title';
+                }
+                return null;
+              },
+            ),
           ),
           SizedBox(height: AppDimensions.spacingM),
-          CustomTextField(
-            controller: _descriptionController,
-            labelText: 'Description',
-            hintText: 'Tell others about your event...',
-            maxLines: 4,
-            prefixIcon: Icon(
-              Icons.description_rounded,
-              color: AppColors.primary,
+          Container(
+            padding: EdgeInsets.all(AppDimensions.spacingL),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.white.withOpacity(0.9)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.05),
+                  blurRadius: 20,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return 'Please enter description';
-              }
-              return null;
-            },
+            child: CustomTextField(
+              controller: _descriptionController,
+              labelText: 'Description',
+              hintText: 'Tell others about your event...',
+              maxLines: 4,
+              suffixIcon: Icon(
+                Icons.description_rounded,
+                color: AppColors.darkPrimary,
+              ),
+              prefixIcon: Icon(
+                Icons.description_rounded,
+                color: AppColors.primary,
+              ),
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return 'Please enter description';
+                }
+                return null;
+              },
+            ),
           ),
         ],
       ),
@@ -548,19 +576,20 @@ class _CreateEventScreenState extends State<CreateEventScreen>
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              AppColors.primary.withOpacity(0.1),
-              AppColors.accent.withOpacity(0.1),
+              AppColors.darkPrimary.withOpacity(0.1),
+              AppColors.darkTextSecondary.withOpacity(0.1),
             ],
           ),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+          border: Border.all(color: AppColors.white.withOpacity(0.9)),
         ),
         child: Row(
           children: [
             Container(
               padding: EdgeInsets.all(AppDimensions.spacingM),
               decoration: BoxDecoration(
-                gradient: AppColors.primaryGradient,
+                color: AppColors.darkPrimary,
+
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
@@ -578,6 +607,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                     DateFormat('EEEE, MMM dd').format(_selectedDateTime),
                     style: AppTextStyles.bodyMedium.copyWith(
                       fontWeight: FontWeight.w600,
+                      color: Colors.white,
                       fontSize: 16,
                     ),
                   ),
@@ -591,7 +621,10 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                 ],
               ),
             ),
-            Icon(Icons.edit_calendar_rounded, color: AppColors.primary),
+            Icon(
+              Icons.edit_calendar_rounded,
+              color: AppColors.darkTextSecondary,
+            ),
           ],
         ),
       ),

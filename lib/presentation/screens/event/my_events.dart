@@ -11,13 +11,16 @@ import 'package:innercircle/core/theme/app_dimensions.dart';
 import 'package:innercircle/core/theme/app_text_styles.dart';
 import 'package:innercircle/data/models/event.dart';
 import 'package:innercircle/presentation/screens/event/event_details.dart';
+import 'package:innercircle/presentation/widgets/curved_top_container.dart';
 
 import 'package:innercircle/presentation/widgets/event_card.dart';
 
 import 'dart:math' as math;
 
+import 'package:innercircle/presentation/widgets/full_eventcard.dart';
+
 class MyEventsScreen extends StatefulWidget {
-  const MyEventsScreen({Key? key}) : super(key: key);
+  const MyEventsScreen({super.key});
 
   @override
   State<MyEventsScreen> createState() => _MyEventsScreenState();
@@ -89,9 +92,11 @@ class _MyEventsScreenState extends State<MyEventsScreen>
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              AppColors.backgroundGradientTop,
-              AppColors.backgroundGradientBottom,
+              AppColors.darkBackground, // top dark purple/grey
+              Color(0xFF2F2F40), // mid shadow tone
+              AppColors.darkBackground, // bottom almost-black
             ],
+            stops: [0.2, 0.5, 1.0],
           ),
         ),
         child: BlocBuilder<AuthBloc, AuthState>(
@@ -111,21 +116,18 @@ class _MyEventsScreenState extends State<MyEventsScreen>
                   pinned: true,
                   backgroundColor: Colors.transparent,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: Container(
-                      decoration: BoxDecoration(
-                        gradient: AppColors.primaryGradient,
-                      ),
+                    background: CurvedTopContainer(
                       child: SafeArea(
                         child: Padding(
-                          padding: EdgeInsets.all(AppDimensions.spacingL),
+                          padding: EdgeInsets.all(10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                'My Events 🎫',
+                                'My Events ',
                                 style: AppTextStyles.headline.copyWith(
-                                  color: Colors.white,
+                                  color: AppColors.darkTextSecondary,
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -134,7 +136,8 @@ class _MyEventsScreenState extends State<MyEventsScreen>
                               Text(
                                 'Events you\'re hosting or attending',
                                 style: AppTextStyles.body.copyWith(
-                                  color: Colors.white.withOpacity(0.9),
+                                  color: AppColors.darkTextSecondary
+                                      .withOpacity(0.9),
                                 ),
                               ),
                             ],
@@ -151,11 +154,20 @@ class _MyEventsScreenState extends State<MyEventsScreen>
                   delegate: _StickyTabBarDelegate(
                     TabBar(
                       controller: _tabController,
-                      labelColor: AppColors.primary,
-                      unselectedLabelColor: AppColors.textSecondary,
-                      indicatorColor: AppColors.primary,
-                      indicatorWeight: 3,
-                      indicatorSize: TabBarIndicatorSize.label,
+                      labelColor: AppColors.white,
+                      dividerColor: Colors.transparent,
+                      unselectedLabelColor: AppColors.darkSecondary,
+                      indicatorPadding: EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 2,
+                      ),
+                      indicatorColor: AppColors.darkSecondary,
+                      indicator: BoxDecoration(
+                        color: AppColors.darkSecondary,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      indicatorWeight: 2,
+                      indicatorSize: TabBarIndicatorSize.tab,
                       labelStyle: AppTextStyles.bodyMedium.copyWith(
                         fontWeight: FontWeight.w700,
                         fontSize: 16,
@@ -166,23 +178,51 @@ class _MyEventsScreenState extends State<MyEventsScreen>
                       ),
                       tabs: [
                         Tab(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.star_rounded, size: 18),
-                              SizedBox(width: 6),
-                              Text('Hosting'),
-                            ],
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 40,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              // color: AppColors.darkSecondary.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(
+                                color: AppColors.darkSecondary,
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.star_rounded, size: 18),
+                                SizedBox(width: 6),
+                                Text('Hosting'),
+                              ],
+                            ),
                           ),
                         ),
                         Tab(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.event_rounded, size: 18),
-                              SizedBox(width: 6),
-                              Text('Joined'),
-                            ],
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 40,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              // color: AppColors.darkSecondary.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(
+                                color: AppColors.darkSecondary,
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.event_rounded, size: 18),
+                                SizedBox(width: 6),
+                                Text('Joined'),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -249,7 +289,7 @@ class _MyEventsScreenState extends State<MyEventsScreen>
                 'Be a host! Create your first event\nand bring people together.',
             actionText: 'Create Event',
             onAction: () {
-              DefaultTabController.of(context)?.animateTo(1);
+              DefaultTabController.of(context).animateTo(1);
             },
           );
         }
@@ -294,7 +334,7 @@ class _MyEventsScreenState extends State<MyEventsScreen>
             subtitle: 'Discover amazing events near you\nand start connecting!',
             actionText: 'Explore Events',
             onAction: () {
-              DefaultTabController.of(context)?.animateTo(0);
+              DefaultTabController.of(context).animateTo(0);
             },
           );
         }
@@ -339,7 +379,7 @@ class _MyEventsScreenState extends State<MyEventsScreen>
                 opacity: value,
                 child: Transform.translate(
                   offset: Offset(0, 20 * (1 - value)),
-                  child: EventCard(
+                  child: FullEventCard(
                     event: event,
                     currentUserId: userId,
                     onTap: () {
@@ -612,7 +652,7 @@ class _StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   ) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.darkBackground,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),

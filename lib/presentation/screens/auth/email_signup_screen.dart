@@ -12,7 +12,7 @@ import '../../widgets/input/custom_text_feild.dart';
 import '../../widgets/primary_button.dart';
 
 class EmailSignUpScreen extends StatefulWidget {
-  const EmailSignUpScreen({Key? key}) : super(key: key);
+  const EmailSignUpScreen({super.key});
 
   @override
   State<EmailSignUpScreen> createState() => _EmailSignUpScreenState();
@@ -83,7 +83,13 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen>
     return Scaffold(
       body: Container(
         height: double.infinity,
-        decoration: BoxDecoration(gradient: AppColors.accentGradient),
+        decoration: BoxDecoration(
+          gradient: AppColors.darkprimaryGradient,
+          image: DecorationImage(
+            image: AssetImage('assets/images/ic_bg_2.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthError) {
@@ -160,17 +166,17 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen>
                           Text(
                             'Create Account 🎉',
                             style: AppTextStyles.headline.copyWith(
-                              color: Colors.white,
+                              color: AppColors.darkPrimary,
                               fontSize: 32,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 12),
+                          SizedBox(height: 8),
 
                           Text(
                             'Join us and start connecting!',
                             style: AppTextStyles.body.copyWith(
-                              color: Colors.white.withOpacity(0.9),
+                              color: AppColors.darkPrimary.withOpacity(0.7),
                               fontSize: 16,
                             ),
                           ),
@@ -193,18 +199,6 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen>
 
   Widget _buildFormCard(bool isLoading) {
     return Container(
-      padding: EdgeInsets.all(AppDimensions.spacingXL),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 30,
-            offset: Offset(0, 10),
-          ),
-        ],
-      ),
       child: Column(
         children: [
           // Name Field
@@ -258,7 +252,7 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen>
                 _obscurePassword
                     ? Icons.visibility_off_rounded
                     : Icons.visibility_rounded,
-                color: AppColors.grey600,
+                color: AppColors.darkTextSecondary,
               ),
               onPressed: () {
                 setState(() => _obscurePassword = !_obscurePassword);
@@ -291,7 +285,7 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen>
                 _obscureConfirmPassword
                     ? Icons.visibility_off_rounded
                     : Icons.visibility_rounded,
-                color: AppColors.grey600,
+                color: AppColors.darkTextSecondary,
               ),
               onPressed: () {
                 setState(
@@ -317,6 +311,7 @@ class _EmailSignUpScreenState extends State<EmailSignUpScreen>
             icon: Icons.person_add_rounded,
             onPressed: isLoading ? null : _signUp,
             isLoading: isLoading,
+            backgroundColor: AppColors.darkPrimary,
           ),
 
           SizedBox(height: AppDimensions.spacingL),

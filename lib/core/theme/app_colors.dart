@@ -113,6 +113,16 @@ class AppColors {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
+  static const LinearGradient darkprimaryGradient = LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColors.darkBackground, // top dark purple/grey
+              Color(0xFF2F2F40), // mid shadow tone
+              AppColors.darkBackground, // bottom almost-black
+            ],
+            stops: [0.2, 0.5, 1.0],
+          );
 
   static const LinearGradient accentGradient = LinearGradient(
     colors: [accentGradientStart, accentGradientEnd],

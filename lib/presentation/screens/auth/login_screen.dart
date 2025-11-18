@@ -16,7 +16,7 @@ import '../user/interest_screen.dart';
 import '../../widgets/primary_button.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +24,19 @@ class LoginScreen extends StatelessWidget {
       body: Container(
         height: double.infinity,
         decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/ic_bg.png'),
+            fit: BoxFit.cover,
+          ),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppColors.primaryGradientStart,
-              AppColors.primaryGradientEnd,
-              AppColors.accentGradientStart,
+              AppColors.darkBackground, // top dark purple/grey
+              Color(0xFF2F2F40), // mid shadow tone
+              AppColors.darkBackground, // bottom almost-black
             ],
+            stops: [0.2, 0.5, 1.0],
           ),
         ),
         child: BlocConsumer<AuthBloc, AuthState>(
@@ -107,10 +112,10 @@ class LoginScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            child: Icon(
-                              Icons.people_alt_rounded,
-                              size: 80,
-                              color: Colors.white,
+                            child: Image.asset(
+                              'assets/images/amico.png',
+                              width: 150,
+                              height: 150,
                             ),
                           ),
                         );

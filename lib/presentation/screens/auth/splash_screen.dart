@@ -13,7 +13,7 @@ import '../user/interest_screen.dart';
 import '../auth/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -92,6 +92,7 @@ class _SplashScreenState extends State<SplashScreen>
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUnauthenticated) {
+          Future.delayed(const Duration(milliseconds: 1500), () {});
           Navigator.of(context).pushReplacement(
             PageRouteBuilder(
               pageBuilder:
@@ -117,44 +118,48 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           );
         } else if (state is AuthNeedsProfile) {
-          Navigator.of(context).pushReplacement(
-            PageRouteBuilder(
-              pageBuilder:
-                  (context, animation, secondaryAnimation) => InterestsScreen(
-                    uid: state.uid,
-                    name: state.name,
-                    photoUrl: state.photoUrl,
-                    lat: state.lat,
-                    lng: state.lng,
-                  ),
-              transitionsBuilder: (
-                context,
-                animation,
-                secondaryAnimation,
-                child,
-              ) {
-                return FadeTransition(opacity: animation, child: child);
-              },
-              transitionDuration: const Duration(milliseconds: 800),
-            ),
-          );
+          Future.delayed(const Duration(milliseconds: 1500), () {
+            Navigator.of(context).pushReplacement(
+              PageRouteBuilder(
+                pageBuilder:
+                    (context, animation, secondaryAnimation) => InterestsScreen(
+                      uid: state.uid,
+                      name: state.name,
+                      photoUrl: state.photoUrl,
+                      lat: state.lat,
+                      lng: state.lng,
+                    ),
+                transitionsBuilder: (
+                  context,
+                  animation,
+                  secondaryAnimation,
+                  child,
+                ) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+                transitionDuration: const Duration(milliseconds: 800),
+              ),
+            );
+          });
         } else if (state is AuthAuthenticated) {
-          Navigator.of(context).pushReplacement(
-            PageRouteBuilder(
-              pageBuilder:
-                  (context, animation, secondaryAnimation) =>
-                      const HomeScreen(),
-              transitionsBuilder: (
-                context,
-                animation,
-                secondaryAnimation,
-                child,
-              ) {
-                return FadeTransition(opacity: animation, child: child);
-              },
-              transitionDuration: const Duration(milliseconds: 800),
-            ),
-          );
+          Future.delayed(const Duration(milliseconds: 1500), () {
+            Navigator.of(context).pushReplacement(
+              PageRouteBuilder(
+                pageBuilder:
+                    (context, animation, secondaryAnimation) =>
+                        const HomeScreen(),
+                transitionsBuilder: (
+                  context,
+                  animation,
+                  secondaryAnimation,
+                  child,
+                ) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+                transitionDuration: const Duration(milliseconds: 800),
+              ),
+            );
+          });
         }
       },
       child: Scaffold(
@@ -166,21 +171,16 @@ class _SplashScreenState extends State<SplashScreen>
               builder: (context, child) {
                 return Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        AppColors.primaryGradientStart,
-                        AppColors.primaryGradientEnd,
-                        AppColors.accentGradientStart,
-                      ],
-                      stops: [
-                        0.0,
-                        0.5 +
-                            math.sin(_liquidController.value * 2 * math.pi) *
-                                0.2,
-                        1.0,
-                      ],
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/ic_bg_2.png'),
+                      fit: BoxFit.cover,
+                    ),
+                    color: Color.lerp(
+                      AppColors.darkPrimary,
+                      AppColors.darkPrimary,
+                      (0.5 +
+                          0.5 *
+                              math.sin(_liquidController.value * 2 * math.pi)),
                     ),
                   ),
                 );
@@ -219,17 +219,17 @@ class _SplashScreenState extends State<SplashScreen>
             }),
 
             // Rotating circles background
-            Positioned.fill(
-              child: AnimatedBuilder(
-                animation: _rotateAnimation,
-                builder: (context, child) {
-                  return Transform.rotate(
-                    angle: _rotateAnimation.value * 2 * math.pi,
-                    child: CustomPaint(painter: CirclesPainter()),
-                  );
-                },
-              ),
-            ),
+            // Positioned.fill(
+            //   child: AnimatedBuilder(
+            //     animation: _rotateAnimation,
+            //     builder: (context, child) {
+            //       return Transform.rotate(
+            //         angle: _rotateAnimation.value * 2 * math.pi,
+            //         child: CustomPaint(painter: CirclesPainter()),
+            //       );
+            //     },
+            //   ),
+            // ),
 
             // Main Content
             Center(
@@ -241,39 +241,7 @@ class _SplashScreenState extends State<SplashScreen>
                     // Animated Logo
                     ScaleTransition(
                       scale: _scaleAnimation,
-                      child: Container(
-                        padding: const EdgeInsets.all(32),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white.withOpacity(0.2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 40,
-                              spreadRadius: 10,
-                            ),
-                          ],
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.white.withOpacity(0.9),
-                                Colors.white.withOpacity(0.7),
-                              ],
-                            ),
-                          ),
-                          child: const Icon(
-                            Icons.people_alt_rounded,
-                            size: 80,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                      ),
+                      child: Image.asset('assets/images/welcome.png'),
                     ),
                     const SizedBox(height: 48),
 
@@ -297,7 +265,7 @@ class _SplashScreenState extends State<SplashScreen>
                         child: AnimatedTextKit(
                           animatedTexts: [
                             TypewriterAnimatedText(
-                              'Together',
+                              'InnerCircle',
                               speed: const Duration(milliseconds: 150),
                             ),
                           ],
@@ -312,8 +280,9 @@ class _SplashScreenState extends State<SplashScreen>
                       opacity: _fadeAnimation,
                       child: DefaultTextStyle(
                         style: AppTextStyles.body.copyWith(
-                          color: Colors.white.withOpacity(0.95),
-                          fontSize: 16,
+                          color: AppColors.darkTextSecondary.withOpacity(0.95),
+                          fontSize: 19,
+                          fontWeight: FontWeight.w500,
                           letterSpacing: 1.5,
                           shadows: [
                             Shadow(
@@ -324,34 +293,32 @@ class _SplashScreenState extends State<SplashScreen>
                           ],
                         ),
                         child: AnimatedTextKit(
+                          isRepeatingAnimation: false,
                           animatedTexts: [
-                            FadeAnimatedText(
-                              'Connect. Explore. Together.',
-                              duration: const Duration(milliseconds: 2000),
-                            ),
+                            TyperAnimatedText('Connect. Explore. Together.'),
                           ],
                           pause: const Duration(milliseconds: 1000),
-                          repeatForever: true,
+                          repeatForever: false,
                         ),
                       ),
                     ),
                     const SizedBox(height: 60),
 
                     // Custom Liquid Loading Indicator
-                    SizedBox(
-                      width: 60,
-                      height: 60,
-                      child: AnimatedBuilder(
-                        animation: _liquidController,
-                        builder: (context, child) {
-                          return CustomPaint(
-                            painter: LiquidLoadingPainter(
-                              progress: _liquidController.value,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                    // SizedBox(
+                    //   width: 60,
+                    //   height: 60,
+                    //   child: AnimatedBuilder(
+                    //     animation: _liquidController,
+                    //     builder: (context, child) {
+                    //       return CustomPaint(
+                    //         painter: LiquidLoadingPainter(
+                    //           progress: _liquidController.value,
+                    //         ),
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
