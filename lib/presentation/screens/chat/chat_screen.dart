@@ -16,8 +16,7 @@ class ChatScreen extends StatefulWidget {
   final Event event;
   final AppUser currentUser;
 
-  const ChatScreen({Key? key, required this.event, required this.currentUser})
-    : super(key: key);
+  const ChatScreen({super.key, required this.event, required this.currentUser});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -67,29 +66,42 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.darkSurface,
       appBar: AppBar(
+        backgroundColor: AppColors.darkPrimary,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               widget.event.title,
-              style: AppTextStyles.bodyMedium.copyWith(fontSize: 16),
+              style: AppTextStyles.bodyMedium.copyWith(
+                fontSize: 18,
+                color: AppColors.darkTextSecondary,
+              ),
             ),
             Text(
               '${widget.event.joinedUsers.length} participants',
-              style: AppTextStyles.caption.copyWith(fontSize: 11),
+              style: AppTextStyles.caption.copyWith(
+                fontSize: 14,
+                color: AppColors.darkTextSecondary.withOpacity(0.7),
+              ),
             ),
           ],
         ),
+
         actions: [
           IconButton(
-            icon: const Icon(Icons.info_outline),
+            icon: const Icon(
+              Icons.info_outline,
+              color: AppColors.darkTextSecondary,
+            ),
             onPressed: () {
               // Navigate back to event details
               Navigator.pop(context);
             },
           ),
         ],
+        leading: BackButton(color: AppColors.darkTextSecondary),
       ),
       body: Column(
         children: [
@@ -139,7 +151,9 @@ class _ChatScreenState extends State<ChatScreen> {
                           SizedBox(height: AppDimensions.spacingM),
                           Text(
                             'No messages yet',
-                            style: AppTextStyles.subheading,
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              fontSize: 19,
+                            ),
                           ),
                           SizedBox(height: AppDimensions.spacingS),
                           Text(
@@ -325,7 +339,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Container(
       padding: EdgeInsets.all(AppDimensions.spacingM),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.darkSurface,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -345,9 +359,11 @@ class _ChatScreenState extends State<ChatScreen> {
                   hintStyle: AppTextStyles.body.copyWith(
                     color: AppColors.textSecondary,
                   ),
-                  filled: true,
+
+                  filled: false,
                   fillColor: AppColors.grey100,
                   border: OutlineInputBorder(
+                    
                     borderRadius: BorderRadius.circular(
                       AppDimensions.radiusCircular,
                     ),

@@ -372,7 +372,7 @@ class _CreateEventScreenState extends State<CreateEventScreen>
                               );
                             },
                           ),
-                          SizedBox(height: 100), // Bottom padding for nav
+                          SizedBox(height: 150), // Bottom padding for nav
                         ],
                       ),
                     ),

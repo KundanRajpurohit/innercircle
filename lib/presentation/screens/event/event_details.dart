@@ -25,7 +25,7 @@ import '../chat/chat_screen.dart';
 class EventDetailScreen extends StatefulWidget {
   final Event event;
 
-  const EventDetailScreen({Key? key, required this.event}) : super(key: key);
+  const EventDetailScreen({super.key, required this.event});
 
   @override
   State<EventDetailScreen> createState() => _EventDetailScreenState();
@@ -156,7 +156,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                             Expanded(
                               child: Text(
                                 widget.event.title,
-                                style: AppTextStyles.headline,
+                                style: AppTextStyles.headline.copyWith(
+                                  color: AppColors.white,
+                                ),
                               ),
                             ),
                             if (isHost)
@@ -166,7 +168,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                   vertical: AppDimensions.spacingS,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: AppColors.primary.withOpacity(0.1),
+                                  color: AppColors.darkPrimary.withOpacity(1),
                                   borderRadius: BorderRadius.circular(
                                     AppDimensions.radiusCircular,
                                   ),
@@ -174,7 +176,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                 child: Text(
                                   'Host',
                                   style: AppTextStyles.body.copyWith(
-                                    color: AppColors.primary,
+                                    color: AppColors.white,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -220,16 +222,29 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                         SizedBox(height: AppDimensions.spacingL),
 
                         // Description
-                        Text('About', style: AppTextStyles.subheading),
+                        Text(
+                          'About',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            fontSize: 16,
+                          ),
+                        ),
                         SizedBox(height: AppDimensions.spacingS),
                         Text(
                           widget.event.description,
-                          style: AppTextStyles.body,
+                          style: AppTextStyles.body.copyWith(
+                            color: AppColors.textTertiary,
+                            fontStyle: FontStyle.italic,
+                          ),
                         ),
                         SizedBox(height: AppDimensions.spacingL),
 
                         // Host Info
-                        Text('Host', style: AppTextStyles.subheading),
+                        Text(
+                          'Host',
+                          style: AppTextStyles.subheading.copyWith(
+                            color: AppColors.white,
+                          ),
+                        ),
                         SizedBox(height: AppDimensions.spacingM),
                         _isLoadingHost
                             ? const Center(child: CircularProgressIndicator())
@@ -239,7 +254,12 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                         SizedBox(height: AppDimensions.spacingL),
 
                         // Map
-                        Text('Location', style: AppTextStyles.subheading),
+                        Text(
+                          'Location',
+                          style: AppTextStyles.subheading.copyWith(
+                            color: AppColors.white,
+                          ),
+                        ),
                         SizedBox(height: AppDimensions.spacingM),
                         _buildMap(),
                         SizedBox(height: AppDimensions.spacingXL),
@@ -364,21 +384,27 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
     return Row(
       children: [
         Container(
-          padding: EdgeInsets.all(AppDimensions.spacingS),
+          padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.white.withOpacity(0.1),
             borderRadius: BorderRadius.circular(AppDimensions.radiusS),
           ),
-          child: Icon(icon, color: AppColors.primary, size: 20),
+          child: Icon(icon, color: AppColors.darkPrimary, size: 20),
         ),
         SizedBox(width: AppDimensions.spacingM),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: AppTextStyles.caption),
+              Text(label, style: AppTextStyles.bodyMedium),
               SizedBox(height: AppDimensions.spacingXS),
-              Text(value, style: AppTextStyles.bodyMedium),
+              Text(
+                value,
+                style: AppTextStyles.caption.copyWith(
+                  fontSize: 14,
+                  color: AppColors.textTertiary,
+                ),
+              ),
             ],
           ),
         ),
@@ -390,9 +416,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
     return Container(
       padding: EdgeInsets.all(AppDimensions.spacingM),
       decoration: BoxDecoration(
-        color: AppColors.grey50,
+        color: AppColors.white.withOpacity(0.1),
         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-        border: Border.all(color: AppColors.borderLight),
+        border: Border.all(color: AppColors.white.withOpacity(0.2)),
       ),
       child: Row(
         children: [
@@ -425,7 +451,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   style: AppTextStyles.bodyMedium.copyWith(fontSize: 16),
                 ),
                 SizedBox(height: AppDimensions.spacingXS),
-                Text('Event Host', style: AppTextStyles.caption),
+                Text('Event Host', style: AppTextStyles.bodyDark),
               ],
             ),
           ),

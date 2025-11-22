@@ -31,7 +31,7 @@ import '../../widgets/secondary_button.dart';
 import '../auth/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -188,16 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              AppColors.backgroundGradientTop,
-              AppColors.backgroundGradientBottom,
-            ],
-          ),
-        ),
+        decoration: BoxDecoration(gradient: AppColors.darkprimaryGradient),
         child: BlocListener<ProfileBloc, ProfileState>(
           listener: (context, state) {
             if (state is ProfileUpdated) {
@@ -272,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         Container(
                           margin: EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            gradient: AppColors.primaryGradient,
+                            color: AppColors.darkSecondary,
                             borderRadius: BorderRadius.circular(12),
                             boxShadow: [
                               BoxShadow(
@@ -340,7 +331,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   Widget _buildProfileHeader(user) {
     return Container(
-      decoration: BoxDecoration(gradient: AppColors.primaryGradient),
+      decoration: BoxDecoration(color: AppColors.darkPrimary),
       child: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -365,7 +356,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       backgroundColor: Colors.white,
                       child: CircleAvatar(
                         radius: 56,
-                        backgroundColor: AppColors.primary,
+                        backgroundColor: AppColors.darkSecondary,
                         backgroundImage:
                             user.photoUrl != null
                                 ? CachedNetworkImageProvider(user.photoUrl!)
@@ -375,7 +366,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 ? Text(
                                   user.name[0].toUpperCase(),
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: AppColors.darkTextSecondary,
                                     fontSize: 48,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -410,7 +401,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               Text(
                 user.name,
                 style: AppTextStyles.headline.copyWith(
-                  color: Colors.white,
+                  color: AppColors.darkTextSecondary,
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
@@ -429,15 +420,17 @@ class _ProfileScreenState extends State<ProfileScreen>
     return Container(
       padding: EdgeInsets.all(AppDimensions.spacingL),
       decoration: BoxDecoration(
-        color: Colors.white,
+        gradient: LinearGradient(
+          colors: [
+            AppColors.primary.withOpacity(0.05),
+            AppColors.accent.withOpacity(0.03),
+          ],
+        ),
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 20,
-            offset: Offset(0, 4),
-          ),
-        ],
+        border: Border.all(
+          color: AppColors.darkSurfaceElevated.withOpacity(0.5),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -451,6 +444,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 style: AppTextStyles.subheading.copyWith(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: AppColors.white,
                 ),
               ),
             ],
@@ -478,13 +472,17 @@ class _ProfileScreenState extends State<ProfileScreen>
             if (user.bio != null && user.bio!.isNotEmpty)
               Text(
                 user.bio!,
-                style: AppTextStyles.body.copyWith(fontSize: 15, height: 1.5),
+                style: AppTextStyles.body.copyWith(
+                  fontSize: 15,
+                  height: 1.5,
+                  fontStyle: FontStyle.italic,
+                ),
               )
             else
               Text(
                 'No bio yet. Tap edit to add one!',
                 style: AppTextStyles.body.copyWith(
-                  color: AppColors.textSecondary,
+                  color: AppColors.textTertiary,
                   fontStyle: FontStyle.italic,
                 ),
               ),
@@ -501,11 +499,14 @@ class _ProfileScreenState extends State<ProfileScreen>
         gradient: LinearGradient(
           colors: [
             AppColors.primary.withOpacity(0.05),
-            AppColors.accent.withOpacity(0.05),
+            AppColors.accent.withOpacity(0.03),
           ],
         ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primary.withOpacity(0.2), width: 1),
+        border: Border.all(
+          color: AppColors.darkSurfaceElevated.withOpacity(0.5),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -519,6 +520,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 style: AppTextStyles.subheading.copyWith(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: AppColors.white,
                 ),
               ),
             ],
@@ -584,15 +586,17 @@ class _ProfileScreenState extends State<ProfileScreen>
     return Container(
       padding: EdgeInsets.all(AppDimensions.spacingL),
       decoration: BoxDecoration(
-        gradient: AppColors.primaryGradient,
+        gradient: LinearGradient(
+          colors: [
+            AppColors.primary.withOpacity(0.05),
+            AppColors.accent.withOpacity(0.03),
+          ],
+        ),
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withOpacity(0.3),
-            blurRadius: 20,
-            offset: Offset(0, 8),
-          ),
-        ],
+        border: Border.all(
+          color: AppColors.darkSurfaceElevated.withOpacity(0.5),
+          width: 1,
+        ),
       ),
       child: Column(
         children: [
@@ -690,6 +694,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       );
     } else {
       return SecondaryButton(
+        height: 55,
         text: 'Sign Out',
         onPressed: () => _signOut(context),
         icon: Icons.logout_rounded,

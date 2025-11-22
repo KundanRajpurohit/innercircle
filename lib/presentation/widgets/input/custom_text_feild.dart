@@ -138,6 +138,7 @@ class _CustomTextFieldState extends State<CustomTextField>
         decoration: InputDecoration(
           hintText: widget.hintText,
           labelText: widget.labelText,
+          
           hintStyle:
               widget.hintStyle ??
               AppTextStyles.body.copyWith(color: AppColors.white),
